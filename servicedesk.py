@@ -4,7 +4,7 @@ from tkinter import scrolledtext
 import pandas as pd
 
 class ServiceDashboard(tk.Frame):
-    # deffineren en packen van de widgets
+    # definiëren en packen van de widgets
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -53,7 +53,8 @@ class ServiceDashboard(tk.Frame):
             delete_button.pack(side=tk.RIGHT, padx=5)
             button_frame.pack(fill=tk.X, pady=2)
             self.scrolled_text.window_create(tk.END, window=button_frame)
-            self.scrolled_text.insert(tk.END, "\n")
+            self.scrolled_text.insert(tk.END, "-"*40 + "\n"
+)
 
     def edit_afspraak(self, afspraak):
         pass
