@@ -1,26 +1,39 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-from login import LoginScreen
-import csv
+from tkinter import ttk
+from servicedesk import ServiceDashboard
+
+class LoginScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        label = ttk.Label(self, text="Login")
+        label.pack(pady=10)
+
+        self.username_entry = ttk.Entry(self)
+        self.username_entry.pack(pady=5)
+        self.username_entry.insert(0, "Username")
+
+        login_button = ttk.Button(self, text="Login", command=self.check_login)
+        login_button.pack(pady=5)
+
+    def check_login(self):
+        username = self.username_entry.get()
+        if username == "service1":
+            self.controller.show_frame("ServiceDashboard")
+        else:
+            tk.messagebox.showerror("Login Failed", "Invalid username")
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Fietsenmakers App")
-        self.geometry("500x400")
+        self.title("Service Desk")
+        self.geometry("1000x600")  # Pas de breedte en hoogte van de applicatie aan
 
-        # container frame waar alles wordt ingeladen
         container = tk.Frame(self)
-        container.grid(row=0, column=0, sticky="nsew")
-
-        #  grid container een manier van plaatsing binnen tkinter
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        container.pack(side="top", fill="both", expand=True)
 
         self.frames = {}
-
-        #loop standaard tkinter: loopt over de te laden frames nu alleen login
-        for F in (LoginScreen,):
+        for F in (LoginScreen, ServiceDashboard):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -36,7 +49,6 @@ class App(tk.Tk):
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
-        print(f"Overgeschakeld naar frame: {page_name}")  # debug printen in terminal
 
 if __name__ == "__main__":
     app = App()
