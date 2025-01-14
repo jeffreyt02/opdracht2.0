@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkinter.scrolledtext import ScrolledText
-import csv
+from tkinter import scrolledtext
+import pandas as pd
 
 class FietsenmakerDashboard(tk.Frame):
     def __init__(self, parent, controller):
@@ -10,24 +10,29 @@ class FietsenmakerDashboard(tk.Frame):
         label = ttk.Label(self, text="Fietsenmaker Dashboard")
         label.pack(pady=10)
 
-        # Maak een frame voor de scrollable text
-        frame = ttk.Frame(self)
-        frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        logout_button = ttk.Button(self, text="Log Out", command=self.logout)
+        logout_button.pack(anchor='ne', padx=10, pady=10)
 
-        # Maak de scrollable text widget
-        self.scrolled_text = ScrolledText(frame, wrap=tk.WORD, width=100, height=20)
-        self.scrolled_text.pack(fill=tk.BOTH, expand=True)
+        self.scrolled_text = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=100, height=20)
+        self.scrolled_text.pack(pady=10)
 
-        # Laad de gegevens in
-        self.load_data()
+        self.populate_fietsen()
 
-    def load_data(self):
-        # Lees de CSV-bestand
-        with open('C:\\Users\\SKIKK\\Desktop\\Haagse hoge\\kwartaal2\\opdracht2.0\\gegevens\\fiets_gegevens.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                # Voeg de gegevens toe aan de scrollable text
-                self.scrolled_text.insert(tk.END, f"Naam: {row['naam']} {row['achternaam']}\n")
-                self.scrolled_text.insert(tk.END, f"Verhuurdatum: {row['verhuurdatum']}\n")
-                self.scrolled_text.insert(tk.END, f"Terugbrengdatum: {row['terugbrengdatum']}\n")
-                self.scrolled_text.insert(tk.END, "-"*40 + "\n")
+    def logout(self):
+        self.controller.show_frame("LoginScreen")
+
+    def populate_fietsen(self):
+        # Lees de gegevens uit het CSV-bestand
+        verhuurde_fietsen = pd.read_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv')
+
+        # Voeg de gegevens toe aan de ScrolledText widget
+        for index, row in verhuurde_fietsen.iterrows():
+            fiets_info = f"Fiets ID: {row['fiets_id']}, Naam: {row['naam']} {row['achternaam']}, Verhuurdatum: {row['verhuurdatum']}, Terugbrengdatum: {row['terugbrengdatum']}, Totaaldagen: {row['totaaldagen']}, Kosten: €{row['kosten']}"
+            self.scrolled_text.insert(tk.END, fiets_info + "\n")
+            self.scrolled_text.insert(tk.END, "-"*40 + "\n")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Fietsenmaker Dashboard")
+    FietsenmakerDashboard(root, None).pack(fill="both", expand=True)
+    root.mainloop()

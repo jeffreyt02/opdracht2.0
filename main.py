@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from servicedesk import ServiceDashboard
-from eigenaar_dasboard import EigenaarDashboard
+from eigenaar_dasboard import EigenaarDashboard  # Correcte bestandsnaam
 from fietsen_maker import FietsenmakerDashboard
 
 class LoginScreen(tk.Frame):
@@ -45,11 +45,6 @@ class App(tk.Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        # Centreer de container
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-        # Toon eerst het inlogscherm
         self.show_frame("LoginScreen")
 
     def show_frame(self, page_name):

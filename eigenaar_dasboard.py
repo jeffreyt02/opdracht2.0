@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -11,30 +11,52 @@ class EigenaarDashboard(tk.Frame):
         label = ttk.Label(self, text="Eigenaar Dashboard")
         label.pack(pady=10)
 
-        show_chart_button = ttk.Button(self, text="Toon Verhuur Grafiek", command=self.show_chart)
-        show_chart_button.pack(pady=10)
+        logout_button = ttk.Button(self, text="Log Out", command=self.logout)
+        logout_button.pack(anchor='ne', padx=10, pady=10)
 
-    def show_chart(self):
-        # Lees de CSV-bestand
-        df = pd.read_csv('C:\\Users\\SKIKK\\Desktop\\Haagse hoge\\kwartaal2\\opdracht2.0\\gegevens\\fiets_gegevens.csv')
+        self.plot_graph()
+
+    def logout(self):
+        self.controller.show_frame("LoginScreen")
+
+    def plot_graph(self):
+        # Lees de gegevens uit het CSV-bestand
+        verhuurde_fietsen = pd.read_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv')
 
         # Converteer de verhuurdatum naar datetime
-        df['verhuurdatum'] = pd.to_datetime(df['verhuurdatum'])
+        verhuurde_fietsen['verhuurdatum'] = pd.to_datetime(verhuurde_fietsen['verhuurdatum'])
 
-        # Groepeer op maand en tel het aantal verhuurde fietsen
-        df['maand'] = df['verhuurdatum'].dt.to_period('M')
-        verhuur_per_maand = df.groupby('maand').size()
+        # Groepeer de gegevens per maand en tel het aantal verhuurde fietsen en de totale omzet
+        verhuurde_fietsen['maand'] = verhuurde_fietsen['verhuurdatum'].dt.to_period('M')
+        verhuur_per_maand = verhuurde_fietsen.groupby('maand').size()
+        omzet_per_maand = verhuurde_fietsen.groupby('maand')['kosten'].sum()
 
         # Maak de grafiek
-        fig, ax = plt.subplots()
-        verhuur_per_maand.plot(kind='bar', ax=ax)
-        ax.set_title('Aantal verhuurde fietsen per maand')
-        ax.set_xlabel('Maand')
-        ax.set_ylabel('Aantal verhuurde fietsen')
-        ax.set_xticklabels(verhuur_per_maand.index, rotation=0)  # Plaats de datums horizontaal
+        fig, ax1 = plt.subplots()
 
-        # Voeg de grafiek toe aan het tkinter venster
+        # Plot het aantal verhuurde fietsen
+        ax1.bar(verhuur_per_maand.index.astype(str), verhuur_per_maand, color='b', alpha=0.6, label='Aantal verhuurde fietsen')
+        ax1.set_xlabel('Maand')
+        ax1.set_ylabel('Aantal verhuurde fietsen', color='b')
+        ax1.tick_params(axis='y', labelcolor='b')
+
+        # Maak een tweede y-as voor de omzet
+        ax2 = ax1.twinx()
+        ax2.plot(omzet_per_maand.index.astype(str), omzet_per_maand, color='r', marker='o', label='Totale omzet')
+        ax2.set_ylabel('Totale omzet (€)', color='r')
+        ax2.tick_params(axis='y', labelcolor='r')
+
+        # Voeg een titel en legenda toe
+        fig.suptitle('Aantal verhuurde fietsen en totale omzet per maand')
+        fig.legend(loc='upper left', bbox_to_anchor=(0.1, 0.9))
+
+        # Voeg de grafiek toe aan het tkinter frame
         canvas = FigureCanvasTkAgg(fig, master=self)
         canvas.draw()
-        canvas.get_tk_widget().pack(pady=10)
+        canvas.get_tk_widget().pack(pady=20)
 
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Eigenaar Dashboard")
+    EigenaarDashboard(root, None).pack(fill="both", expand=True)
+    root.mainloop()
