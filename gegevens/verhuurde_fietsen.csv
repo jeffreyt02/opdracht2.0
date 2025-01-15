@@ -1,6 +1,4 @@
 fiets_id,verhuurdatum,terugbrengdatum,totaaldagen,kosten,naam,achternaam
-9,2023-03-04,2023-03-06,2,16,John,Doe
-10,2023-03-07,2023-03-09,2,16,Jane,Doe
 11,2023-03-10,2023-03-12,2,16,Tom,Johnson
 12,2023-03-13,2023-03-15,2,16,Emily,Davis
 13,2023-03-16,2023-03-18,2,16,Michael,Brown
@@ -14,3 +12,6 @@ fiets_id,verhuurdatum,terugbrengdatum,totaaldagen,kosten,naam,achternaam
 21,2025-01-15,2025-01-23,8,64,JEff2,hallo
 6,2025-02-10,2025-02-11,1,8,jeff,thoden
 8,2023-03-01,2023-03-03,2,16,Anna,Smith22
+9,2023-03-04,2023-03-06,2,16,John,Doedd
+10,2023-03-07,2023-03-09,2,16,Jane,Doe2
+23,2025-01-16,2025-02-20,35,280,erik,holstein
