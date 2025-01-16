@@ -33,7 +33,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Service Desk")
-        self.geometry("1200x600")  # Pas de breedte en hoogte van de applicatie aan
+        self.geometry("800x600")  # Pas de breedte en hoogte van de applicatie aan
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
