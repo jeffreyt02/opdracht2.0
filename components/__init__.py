@@ -1,0 +1,1 @@
+# Dit bestand markeert de map 'componenten' als een Python-pakket.

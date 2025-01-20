@@ -3,7 +3,46 @@ from tkinter import ttk, messagebox
 from servicedesk import ServiceDashboard
 from eigenaar_dasboard import EigenaarDashboard
 from fietsen_maker import FietsenmakerDashboard
+<<<<<<< Updated upstream
 from login import LoginScreen
+=======
+
+class LoginScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        label = ttk.Label(self, text="Login")
+        label.pack(pady=10)
+
+        self.username_var = tk.StringVar()
+        self.username_entry = ttk.Entry(self, textvariable=self.username_var)
+        self.username_entry.pack(pady=5)
+        self.username_entry.insert(0, "type hier je log naam")
+        self.username_entry.bind("<FocusIn>", self.clear_placeholder)
+        self.username_entry.bind("<FocusOut>", self.add_placeholder)
+
+        login_button = ttk.Button(self, text="Login", command=self.check_login)
+        login_button.pack(pady=5)
+
+    def clear_placeholder(self, event):
+        if self.username_var.get() == "type hier je log naam":
+            self.username_var.set("")
+
+    def add_placeholder(self, event):
+        if not self.username_var.get():
+            self.username_var.set("type hier je log naam")
+
+    def check_login(self):
+        username = self.username_var.get()
+        if username == "service1":
+            self.controller.show_frame("ServiceDashboard")
+        elif username == "eigenaar1":
+            self.controller.show_frame("EigenaarDashboard")
+        elif username == "fietsenmaker1":
+            self.controller.show_frame("FietsenmakerDashboard")
+        else:
+            messagebox.showerror("Login Failed", "Invalid username")
+>>>>>>> Stashed changes
 
 class App(tk.Tk):
     def __init__(self):
@@ -26,10 +65,16 @@ class App(tk.Tk):
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
+        if page_name == "LoginScreen":
+            frame.username_var.set("")
+            frame.add_placeholder(None)
+<<<<<<< Updated upstream
 
     def logout(self):
         self.frames["LoginScreen"].reset_fields()
         self.show_frame("LoginScreen")
+=======
+>>>>>>> Stashed changes
 
 if __name__ == "__main__":
     app = App()
