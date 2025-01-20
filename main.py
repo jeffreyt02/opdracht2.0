@@ -1,33 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from servicedesk import ServiceDashboard
-from eigenaar_dasboard import EigenaarDashboard  # Correcte bestandsnaam
+from eigenaar_dasboard import EigenaarDashboard
 from fietsen_maker import FietsenmakerDashboard
-
-class LoginScreen(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        label = ttk.Label(self, text="Login")
-        label.pack(pady=10)
-
-        self.username_entry = ttk.Entry(self)
-        self.username_entry.pack(pady=5)
-        self.username_entry.insert(0, "Username")
-
-        login_button = ttk.Button(self, text="Login", command=self.check_login)
-        login_button.pack(pady=5)
-
-    def check_login(self):
-        username = self.username_entry.get()
-        if username == "service1":
-            self.controller.show_frame("ServiceDashboard")
-        elif username == "eigenaar1":
-            self.controller.show_frame("EigenaarDashboard")
-        elif username == "fietsenmaker1":
-            self.controller.show_frame("FietsenmakerDashboard")
-        else:
-            messagebox.showerror("Login Failed", "Invalid username")
+from login import LoginScreen
 
 class App(tk.Tk):
     def __init__(self):
@@ -51,6 +27,11 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+    def logout(self):
+        self.frames["LoginScreen"].reset_fields()
+        self.show_frame("LoginScreen")
+
 if __name__ == "__main__":
     app = App()
+    app.geometry("820x650")  # Stel de grootte van het login venster in
     app.mainloop()

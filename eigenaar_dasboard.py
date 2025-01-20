@@ -11,13 +11,10 @@ class EigenaarDashboard(tk.Frame):
         label = ttk.Label(self, text="Eigenaar Dashboard")
         label.pack(pady=10)
 
-        logout_button = ttk.Button(self, text="Log Out", command=self.logout)
+        logout_button = ttk.Button(self, text="Log Out", command=self.controller.logout)
         logout_button.pack(anchor='ne', padx=10, pady=10)
 
         self.plot_graph()
-
-    def logout(self):
-        self.controller.show_frame("LoginScreen")
 
     def plot_graph(self):
         # Lees de gegevens uit het CSV-bestand
@@ -55,8 +52,3 @@ class EigenaarDashboard(tk.Frame):
         canvas.draw()
         canvas.get_tk_widget().pack(pady=20)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Eigenaar Dashboard")
-    EigenaarDashboard(root, None).pack(fill="both", expand=True)
-    root.mainloop()

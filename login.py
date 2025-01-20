@@ -28,18 +28,24 @@ class LoginScreen(tk.Frame):
         # afhankelijk van welke rol je inlogt, krijg je een dashboard
         if rol:
             if rol == 'eigenaar':
-                self.controller.show_frame("eigenaarsDashboard")
+                self.controller.show_frame("EigenaarDashboard")
             elif rol == 'fietsenmaker':
-                self.controller.show_frame("fietsenmakerDashboard")
+                self.controller.show_frame("FietsenmakerDashboard")
             elif rol == 'service':
                 self.controller.show_frame("ServiceDashboard")
         else:
             messagebox.showerror("Error", "Ongeldige gebruikersnaam of wachtwoord")
 
     def authenticate(self, username, password):
-        with open('users.csv', mode='r') as file:
+        # Gebruik het volledige pad naar het bestand
+        file_path = 'C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/users.csv'
+        with open(file_path, mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 if row['username'] == username and row['password'] == password:
                     return row['role']
         return None
+
+    def reset_fields(self):
+        self.username_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)

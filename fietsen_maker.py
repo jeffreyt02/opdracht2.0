@@ -10,16 +10,13 @@ class FietsenmakerDashboard(tk.Frame):
         label = ttk.Label(self, text="Fietsenmaker Dashboard")
         label.pack(pady=10)
 
-        logout_button = ttk.Button(self, text="Log Out", command=self.logout)
+        logout_button = ttk.Button(self, text="Log Out", command=self.controller.logout)
         logout_button.pack(anchor='ne', padx=10, pady=10)
 
         self.scrolled_text = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=100, height=20)
         self.scrolled_text.pack(pady=10)
 
         self.populate_fietsen()
-
-    def logout(self):
-        self.controller.show_frame("LoginScreen")
 
     def populate_fietsen(self):
         # Lees de gegevens uit het CSV-bestand

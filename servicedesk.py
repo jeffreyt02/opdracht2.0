@@ -11,12 +11,14 @@ class ServiceDashboard(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.verhuurde_fietsen = pd.read_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv')
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        self.data_file = os.path.join(base_dir, 'gegevens', 'verhuurde_fietsen.csv')
+        self.verhuurde_fietsen = pd.read_csv(self.data_file)
         
         label = ttk.Label(self, text="Service Dashboard")
         label.pack(pady=10)
 
-        logout_button = ttk.Button(self, text="Log Out", command=self.logout)
+        logout_button = ttk.Button(self, text="Log Out", command=self.controller.logout)
         logout_button.pack(anchor='ne', padx=10, pady=10)
 
         new_appointment_button = ttk.Button(self, text="Nieuwe Afspraak", command=self.open_new_appointment_window)
@@ -31,9 +33,6 @@ class ServiceDashboard(tk.Frame):
         self.scrolled_text.pack(pady=10)
 
         self.populate_afspraken()
-
-    def logout(self):
-        self.controller.show_frame("LoginScreen")
 
     def open_new_appointment_window(self):
         AppointmentWindow(self, self.save_new_appointment)
@@ -63,14 +62,13 @@ class ServiceDashboard(tk.Frame):
         # Bereken de kosten
         kosten = int(totaaldagen) * 8
 
-        new_row = [int(fiets_id), verhuurdatum, terugbrengdatum, int(totaaldagen), kosten, naam, achternaam]
+        new_row = pd.DataFrame([[int(fiets_id), verhuurdatum, terugbrengdatum, int(totaaldagen), kosten, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
 
         # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
-        with open('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv', 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(new_row)
+        self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
 
-        self.verhuurde_fietsen = pd.read_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv')
+        # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
+        self.verhuurde_fietsen.to_csv(self.data_file, index=False)
         self.populate_afspraken()
 
     def save_edited_appointment(self, appointment_data, original_appointment):
@@ -85,12 +83,11 @@ class ServiceDashboard(tk.Frame):
         self.verhuurde_fietsen = self.verhuurde_fietsen[self.verhuurde_fietsen.index != original_appointment.name]
 
         # Voeg de bewerkte afspraak toe
-        new_row = [fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, totaaldagen * 8, naam, achternaam]
-        new_row = pd.Series(new_row, index=self.verhuurde_fietsen.columns)
-        self.verhuurde_fietsen = self.verhuurde_fietsen._append(new_row, ignore_index=True)
+        new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, totaaldagen * 8, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
+        self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
 
         # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
-        self.verhuurde_fietsen.to_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv', index=False)
+        self.verhuurde_fietsen.to_csv(self.data_file, index=False)
         self.populate_afspraken()
 
     def update_filter(self, event):
@@ -129,6 +126,6 @@ class ServiceDashboard(tk.Frame):
             # Verwijder de afspraak uit het DataFrame
             self.verhuurde_fietsen = self.verhuurde_fietsen[self.verhuurde_fietsen.index != afspraak.name]
             # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
-            self.verhuurde_fietsen.to_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv', index=False)
+            self.verhuurde_fietsen.to_csv(self.data_file, index=False)
             # Werk de afspraken in de GUI bij
             self.populate_afspraken()
