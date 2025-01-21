@@ -1,17 +1,7 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 # opdracht2.0
  
 
 # Fietsverhuur App
-=======
-# Fietsverhuur App
-
->>>>>>> Stashed changes
-=======
-# Fietsverhuur App
-
->>>>>>> Stashed changes
 Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende gebruikers (service, eigenaar, fietsenmaker) kunnen inloggen en specifieke functionaliteiten kunnen gebruiken.
 
 ## Functionaliteiten
@@ -64,16 +54,4 @@ fietsverhuur-app/
 ├── eigenaar_dasboard.py
 ├── fietsen_maker.py
 ├── README.md
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 └── requirements.txt
-=======
-└── requirements.txt
-
-
->>>>>>> Stashed changes
-=======
-└── requirements.txt
-
-
->>>>>>> Stashed changes
