@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import csv
+import os
 
 class LoginScreen(tk.Frame):
     def __init__(self, parent, controller):
@@ -37,12 +38,16 @@ class LoginScreen(tk.Frame):
             messagebox.showerror("Error", "Ongeldige gebruikersnaam of wachtwoord")
 
     def authenticate(self, username, password):
-        # Gebruik het volledige pad naar het bestand
-        file_path = 'C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/users.csv'
+        # Dynamisch pad naar het CSV-bestand
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(base_dir, 'gegevens', 'users.csv')
+        
         with open(file_path, mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
+                print(f"Checking user: {row['username']} with role: {row['role']}")  # Debug-uitvoer
                 if row['username'] == username and row['password'] == password:
+                    print(f"Authenticated as: {row['role']}")  # Debug-uitvoer
                     return row['role']
         return None
 

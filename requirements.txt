@@ -2,3 +2,4 @@ pandas
 matplotlib
 tkcalendar
 pytest
+os

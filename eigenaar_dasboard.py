@@ -3,6 +3,7 @@ from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import os
 
 class EigenaarDashboard(tk.Frame):
     def __init__(self, parent, controller):
@@ -17,8 +18,13 @@ class EigenaarDashboard(tk.Frame):
         self.plot_graph()
 
     def plot_graph(self):
+            # Dynamisch pad naar het CSV-bestand
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        csv_path = os.path.join(base_dir, 'gegevens', 'verhuurde_fietsen.csv')
+
+        
         # Lees de gegevens uit het CSV-bestand
-        verhuurde_fietsen = pd.read_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv')
+        verhuurde_fietsen = pd.read_csv(csv_path)
 
         # Converteer de verhuurdatum naar datetime
         verhuurde_fietsen['verhuurdatum'] = pd.to_datetime(verhuurde_fietsen['verhuurdatum'])

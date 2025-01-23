@@ -17,12 +17,14 @@ Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende
 - Pandas
 - Matplotlib
 - Tkcalendar
+- OS
+- csv
+  
 
 ## Installatie
 
 1. **Clone de repository**:
-    git clone https://github.com/jouw-gebruikersnaam/fietsverhuur-app.git
-    cd fietsverhuur-app
+    cd opdracht2.0
 
 2. **Installeer de vereiste pakketten**:
         pip install -r requirements.txt
@@ -34,9 +36,9 @@ Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende
 
 
 2. **Log in met de volgende gebruikersnamen**:
-    - Service: `service1`
-    - Eigenaar: `eigenaar1`
-    - Fietsenmaker: `fietsenmaker1`
+    - Service: `service1` wachtwoord:password
+    - Eigenaar: `eigenaar1 `wachtwoord:password
+    - Fietsenmaker: `fietsenmaker1` wachtwoord:password
 
 ## Projectstructuur
     plaintext

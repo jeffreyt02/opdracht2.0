@@ -1,8 +1,4 @@
 fiets_id,verhuurdatum,terugbrengdatum,totaaldagen,kosten,naam,achternaam
-18,2023-03-31,2023-04-02,2.0,16.0,Linda,Thomas
-19,2023-04-03,2023-04-05,2.0,16.0,James,Jackson
-10,2023-03-07,2023-03-09,2.0,16.0,Jane,Doe22
-393,2023-03-28,2023-03-30,2.0,16.0,Robert,Anderson
 12,2023-03-13,2023-03-15,2.0,16.0,Emilyyyy,Davis
 14,2023-03-19,2023-03-21,2.0,16.0,Sarahff,Wilson
 4,2023-01-04,2023-01-08,4.0,32.0,Henk,Hendriks
@@ -14,12 +10,12 @@ fiets_id,verhuurdatum,terugbrengdatum,totaaldagen,kosten,naam,achternaam
 18,2023-03-31,2023-04-02,2.0,16.0,Linda,Thomas
 19,2023-04-03,2023-04-05,2.0,16.0,James,Jackson
 20,2023-04-06,2023-04-08,2.0,16.0,Urkel,Thoen21
-21,2025-01-15,2025-01-23,8.0,64.0,JEff2,hallo
 15,2023-03-22,2023-03-27,5.0,40.0,David,Moore
 32,2025-01-21,2025-01-30,9.0,72.0,dw,wwqewq
-22,2025-01-21,2025-01-29,8.0,64.0,sddsffd,dsfdfs
-22,2025-01-21,2025-01-31,10.0,80.0,test5,test5ww
 5,2023-01-05,2023-01-09,4.0,32.0,Mariedd,Marissen
 13,2023-03-16,2023-03-18,2.0,16.0,Michael,Brossswn
-37,2025-01-21,2025-01-30,9.0,72.0,esdddddfsd,dsfdfds
 20,2023-04-06,2023-04-08,2.0,16.0,Urkelsss,Thoen21
+18,2023-03-31,2023-04-02,2.0,16.0,Linddda,Thomas
+19,2023-04-03,2023-04-05,2.0,16.0,Jamesd,Jackson
+10,2023-03-07,2023-03-09,2.0,16.0,Janes,Doe22
+393,2023-03-28,2023-03-30,2.0,16.0,Robertd,Anderson
