@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import scrolledtext
 import pandas as pd
+import os
 
 class FietsenmakerDashboard(tk.Frame):
     def __init__(self, parent, controller):
@@ -19,8 +20,12 @@ class FietsenmakerDashboard(tk.Frame):
         self.populate_fietsen()
 
     def populate_fietsen(self):
+        # Dynamisch pad naar het CSV-bestand
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        csv_path = os.path.join(base_dir, 'gegevens', 'verhuurde_fietsen.csv')
+
         # Lees de gegevens uit het CSV-bestand
-        verhuurde_fietsen = pd.read_csv('C:/Users/SKIKK/Desktop/Haagse hoge/kwartaal2/opdracht2.0/gegevens/verhuurde_fietsen.csv')
+        verhuurde_fietsen = pd.read_csv(csv_path)
 
         # Voeg de gegevens toe aan de ScrolledText widget
         for index, row in verhuurde_fietsen.iterrows():
@@ -31,5 +36,6 @@ class FietsenmakerDashboard(tk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Fietsenmaker Dashboard")
-    FietsenmakerDashboard(root, None).pack(fill="both", expand=True)
+    app = FietsenmakerDashboard(root, None)
+    app.pack(fill="both", expand=True)
     root.mainloop()
