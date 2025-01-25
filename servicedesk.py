@@ -44,51 +44,72 @@ class ServiceDashboard(tk.Frame):
 
       
     def save_new_appointment(self, appointment_data, _):
-        fiets_id = appointment_data['fiets_id']
-        verhuurdatum = appointment_data['verhuurdatum']
-        terugbrengdatum = appointment_data['terugbrengdatum']
-        totaaldagen = int(float(appointment_data['totaaldagen']))  # Zorg ervoor dat totaaldagen een geheel getal is
-        naam = appointment_data['naam']
-        achternaam = appointment_data['achternaam']
+        	fiets_id = appointment_data['fiets_id']
+            verhuurdatum = pd.to_datetime(appointment_data['verhuurdatum'])
+            terugbrengdatum = pd.to_datetime(appointment_data['terugbrengdatum'])
+            totaaldagen = int(float(appointment_data['totaaldagen']))  # Zorg ervoor dat totaaldagen een geheel getal is
+            naam = appointment_data['naam']
+            achternaam = appointment_data['achternaam']
 
-        # Controleer of het fiets ID geldig is
+    # Controleer of het fiets ID geldig is
         if not fiets_id.isdigit() or int(fiets_id) < 1 or int(fiets_id) > 40:
             messagebox.showerror("Fout", "Ongeldig fiets ID. Voer een ID in tussen 1 en 40.")
             return
 
-        # Controleer of de fiets beschikbaar is
-        if int(fiets_id) in self.verhuurde_fietsen['fiets_id'].values:
-            messagebox.showerror("Fout", "Deze fiets is al gereserveerd voor de opgegeven periode.")
-            return
+    # Controleer of de fiets beschikbaar is voor de opgegeven periode
+    fiets_id = int(fiets_id)
+        for index, row in self.verhuurde_fietsen.iterrows():
+            if row['fiets_id'] == fiets_id:
+                bestaande_verhuurdatum = pd.to_datetime(row['verhuurdatum'])
+                bestaande_terugbrengdatum = pd.to_datetime(row['terugbrengdatum'])
+                if not (terugbrengdatum < bestaande_verhuurdatum or verhuurdatum > bestaande_terugbrengdatum):
+                    messagebox.showerror("Fout", "Deze fiets is al gereserveerd voor de opgegeven periode.")
+                    return
 
-        # Bereken de kosten
-        kosten = totaaldagen * 8
+    # Bereken de kosten
+    kosten = totaaldagen * 8
 
-        new_row = pd.DataFrame([[int(fiets_id), verhuurdatum, terugbrengdatum, totaaldagen, kosten, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
+    new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, kosten, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
 
-        # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
-        self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
+    # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
+    self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
 
-        # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
-        self.verhuurde_fietsen.to_csv(self.data_file, index=False)
-        self.populate_afspraken()
+    # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
+    self.verhuurde_fietsen.to_csv(self.data_file, index=False)
+    self.populate_afspraken()
 
-    def save_edited_appointment(self, appointment_data, original_appointment):
-        fiets_id = int(appointment_data['fiets_id'])
-        verhuurdatum = appointment_data['verhuurdatum']
-        terugbrengdatum = appointment_data['terugbrengdatum']
+    def save_new_appointment(self, appointment_data, _):
+        fiets_id = appointment_data['fiets_id']
+        verhuurdatum = pd.to_datetime(appointment_data['verhuurdatum'])
+        terugbrengdatum = pd.to_datetime(appointment_data['terugbrengdatum'])
         totaaldagen = int(float(appointment_data['totaaldagen']))  # Zorg ervoor dat totaaldagen een geheel getal is
         naam = appointment_data['naam']
         achternaam = appointment_data['achternaam']
 
-        # Verwijder de originele afspraak
-        self.verhuurde_fietsen = self.verhuurde_fietsen[self.verhuurde_fietsen.index != original_appointment.name]
+    # Controleer of het fiets ID geldig is
+        if not fiets_id.isdigit() or int(fiets_id) < 1 or int(fiets_id) > 40:
+            messagebox.showerror("Fout", "Ongeldig fiets ID. Voer een ID in tussen 1 en 40.")
+            return
 
-        # Voeg de bewerkte afspraak toe
-        new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, totaaldagen * 8, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
+    # Controleer of de fiets beschikbaar is voor de opgegeven periode
+        fiets_id = int(fiets_id)
+        for index, row in self.verhuurde_fietsen.iterrows():
+            if row['fiets_id'] == fiets_id:
+                bestaande_verhuurdatum = pd.to_datetime(row['verhuurdatum'])
+                bestaande_terugbrengdatum = pd.to_datetime(row['terugbrengdatum'])
+                if not (terugbrengdatum < bestaande_verhuurdatum or verhuurdatum > bestaande_terugbrengdatum):
+                    messagebox.showerror("Fout", "Deze fiets is al gereserveerd voor de opgegeven periode.")
+                    return
+
+    # Bereken de kosten
+        kosten = totaaldagen * 8
+
+        new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, kosten, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
+
+    # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
         self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
 
-        # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
+    # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
         self.verhuurde_fietsen.to_csv(self.data_file, index=False)
         self.populate_afspraken()
 
