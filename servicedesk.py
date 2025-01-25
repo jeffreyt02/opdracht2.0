@@ -125,9 +125,9 @@ class ServiceDashboard(tk.Frame):
         confirm = messagebox.askyesno("Bevestiging", f"Weet je zeker dat je de afspraak voor {afspraak['naam']} {afspraak['achternaam']} wilt verwijderen?")
         if confirm:
             print(f"Verwijderen afspraak: {afspraak['naam']} {afspraak['achternaam']}")
-            # Verwijder de afspraak uit het DataFrame
+            # Verwijder de afspraak uit het Data
             self.verhuurde_fietsen = self.verhuurde_fietsen[self.verhuurde_fietsen.index != afspraak.name]
-            # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
+            # Schrijf het bijgewerkte Data naar het CSV-bestand
             self.verhuurde_fietsen.to_csv(self.data_file, index=False)
             # Werk de afspraken in de GUI bij
             self.populate_afspraken()
