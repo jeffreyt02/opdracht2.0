@@ -20,6 +20,15 @@ Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende
 - OS
 - csv
   
+## Installatie
+
+1. Clone de repository:
+
+   ```
+   git clone <repository-url>
+   ```
+
+2. Navigeer naar de projectdirectory:
 
 
 1. **Clone de repository**:
