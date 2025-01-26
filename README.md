@@ -11,7 +11,7 @@ Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende
 - **Fietsenmaker Dashboard**: Overzicht van alle verhuurde fietsen en hun details.
 
 ## Vereisten
-
+- pip install -r requirements.txt
 - Python 3.x
 - Tkinter
 - Pandas
