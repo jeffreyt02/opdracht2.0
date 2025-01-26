@@ -9,6 +9,8 @@ from components.appointment_window import AppointmentWindow  # Importeer de Appo
 # Configureer logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
+#hoeronder alle inlog tests en een set  up
 class TestLoginFunctionaliteit(unittest.TestCase):
     def setUp(self):
         self.app = App()
@@ -46,6 +48,9 @@ class TestLoginFunctionaliteit(unittest.TestCase):
         self.login_screen.login()
         self.assertEqual(self.app.frames["LoginScreen"].tkraise(), None)
         logging.info("Login failed")
+
+
+        #dasboard test met testdata: kijkt of er een grafiek in de testeigenaadasboard met de test gegevens
 class TestEigenaarDashboard(unittest.TestCase):
     def setUp(self):
         self.app = App()

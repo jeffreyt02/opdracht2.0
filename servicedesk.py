@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import scrolledtext
-from tkcalendar import DateEntry
 import pandas as pd
-import csv
 import os
 from components.appointment_window import AppointmentWindow
 
@@ -41,43 +39,6 @@ class ServiceDashboard(tk.Frame):
         print(f"Editing afspraak: {afspraak['naam']} {afspraak['achternaam']}")
         AppointmentWindow(self, self.save_edited_appointment, afspraak)
 
-
-      
-    def save_new_appointment(self, appointment_data, _):
-        	fiets_id = appointment_data['fiets_id']
-            verhuurdatum = pd.to_datetime(appointment_data['verhuurdatum'])
-            terugbrengdatum = pd.to_datetime(appointment_data['terugbrengdatum'])
-            totaaldagen = int(float(appointment_data['totaaldagen']))  # Zorg ervoor dat totaaldagen een geheel getal is
-            naam = appointment_data['naam']
-            achternaam = appointment_data['achternaam']
-
-    # Controleer of het fiets ID geldig is
-        if not fiets_id.isdigit() or int(fiets_id) < 1 or int(fiets_id) > 40:
-            messagebox.showerror("Fout", "Ongeldig fiets ID. Voer een ID in tussen 1 en 40.")
-            return
-
-    # Controleer of de fiets beschikbaar is voor de opgegeven periode
-    fiets_id = int(fiets_id)
-        for index, row in self.verhuurde_fietsen.iterrows():
-            if row['fiets_id'] == fiets_id:
-                bestaande_verhuurdatum = pd.to_datetime(row['verhuurdatum'])
-                bestaande_terugbrengdatum = pd.to_datetime(row['terugbrengdatum'])
-                if not (terugbrengdatum < bestaande_verhuurdatum or verhuurdatum > bestaande_terugbrengdatum):
-                    messagebox.showerror("Fout", "Deze fiets is al gereserveerd voor de opgegeven periode.")
-                    return
-
-    # Bereken de kosten
-    kosten = totaaldagen * 8
-
-    new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, kosten, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
-
-    # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
-    self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
-
-    # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
-    self.verhuurde_fietsen.to_csv(self.data_file, index=False)
-    self.populate_afspraken()
-
     def save_new_appointment(self, appointment_data, _):
         fiets_id = appointment_data['fiets_id']
         verhuurdatum = pd.to_datetime(appointment_data['verhuurdatum'])
@@ -86,12 +47,12 @@ class ServiceDashboard(tk.Frame):
         naam = appointment_data['naam']
         achternaam = appointment_data['achternaam']
 
-    # Controleer of het fiets ID geldig is
+        # Controleer of het fiets ID geldig is
         if not fiets_id.isdigit() or int(fiets_id) < 1 or int(fiets_id) > 40:
             messagebox.showerror("Fout", "Ongeldig fiets ID. Voer een ID in tussen 1 en 40.")
             return
 
-    # Controleer of de fiets beschikbaar is voor de opgegeven periode
+        # Controleer of de fiets beschikbaar is voor de opgegeven periode
         fiets_id = int(fiets_id)
         for index, row in self.verhuurde_fietsen.iterrows():
             if row['fiets_id'] == fiets_id:
@@ -101,26 +62,45 @@ class ServiceDashboard(tk.Frame):
                     messagebox.showerror("Fout", "Deze fiets is al gereserveerd voor de opgegeven periode.")
                     return
 
-    # Bereken de kosten
+        # Bereken de kosten
         kosten = totaaldagen * 8
 
         new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, kosten, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
 
-    # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
+        # Voeg de nieuwe afspraak toe aan de verhuurde fietsen
         self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
 
-    # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
+        # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
+        self.verhuurde_fietsen.to_csv(self.data_file, index=False)
+        self.populate_afspraken()
+
+    def save_edited_appointment(self, appointment_data, original_appointment):
+        fiets_id = int(appointment_data['fiets_id'])
+        verhuurdatum = appointment_data['verhuurdatum']
+        terugbrengdatum = appointment_data['terugbrengdatum']
+        totaaldagen = int(float(appointment_data['totaaldagen']))  # Zorg ervoor dat totaaldagen een geheel getal is
+        naam = appointment_data['naam']
+        achternaam = appointment_data['achternaam']
+
+        # Verwijder de originele afspraak
+        self.verhuurde_fietsen = self.verhuurde_fietsen[self.verhuurde_fietsen.index != original_appointment.name]
+
+        # Voeg de bewerkte afspraak toe
+        new_row = pd.DataFrame([[fiets_id, verhuurdatum, terugbrengdatum, totaaldagen, totaaldagen * 8, naam, achternaam]], columns=self.verhuurde_fietsen.columns)
+        self.verhuurde_fietsen = pd.concat([self.verhuurde_fietsen, new_row], ignore_index=True)
+
+        # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
         self.verhuurde_fietsen.to_csv(self.data_file, index=False)
         self.populate_afspraken()
 
     def update_filter(self, event):
-        # Get the current filter text
+        #  filter text
         filter_text = self.filter_var.get().lower()
         
         # Filter data
         filtered_data = self.verhuurde_fietsen[self.verhuurde_fietsen.apply(lambda row: filter_text in str(row['naam']).lower() or filter_text in str(row['achternaam']).lower(), axis=1)]
         
-        # Display filtered forms
+        # gefilterde form
         self.display_forms(filtered_data)
 
     def display_forms(self, data):
@@ -146,9 +126,9 @@ class ServiceDashboard(tk.Frame):
         confirm = messagebox.askyesno("Bevestiging", f"Weet je zeker dat je de afspraak voor {afspraak['naam']} {afspraak['achternaam']} wilt verwijderen?")
         if confirm:
             print(f"Verwijderen afspraak: {afspraak['naam']} {afspraak['achternaam']}")
-            # Verwijder de afspraak uit het Data
+            # Verwijder de afspraak uit het DataFrame
             self.verhuurde_fietsen = self.verhuurde_fietsen[self.verhuurde_fietsen.index != afspraak.name]
-            # Schrijf het bijgewerkte Data naar het CSV-bestand
+            # Schrijf het bijgewerkte DataFrame naar het CSV-bestand
             self.verhuurde_fietsen.to_csv(self.data_file, index=False)
             # Werk de afspraken in de GUI bij
             self.populate_afspraken()

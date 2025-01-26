@@ -21,7 +21,6 @@ Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende
 - csv
   
 
-## Installatie
 
 1. **Clone de repository**:
     cd opdracht2.0
@@ -29,16 +28,15 @@ Dit project is een dashboard voor een fietsverhuurservice, waarmee verschillende
 2. **Installeer de vereiste pakketten**:
         pip install -r requirements.txt
   
-## Gebruik
 
 1. **Start de applicatie**:
     python main.py
 
 
 2. **Log in met de volgende gebruikersnamen**:
-    - Service: `service1` wachtwoord:password
-    - Eigenaar: `eigenaar1 `wachtwoord:password
-    - Fietsenmaker: `fietsenmaker1` wachtwoord:password
+    - Service: `service` wachtwoord:password
+    - Eigenaar: `eigenaar `wachtwoord:password
+    - Fietsenmaker: `fietsenmaker` wachtwoord:password
 
 ## Projectstructuur
     plaintext
